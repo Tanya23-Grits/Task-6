@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Users CRUD</title>
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">-->
+
+
+<div class="d-flex bg-dark flex-fill text-light align-items-center justify-content-between justify-content-center px-4"
+     data-bs-theme="dark">
+    <p class="fs-4 fw-bold pt-2 px-2" th:text="${currentUser.name} "></p>
+    <p class="text-nowrap px-2 pt-2 fs-4" th:text="'  with roles: '"></p>
+    <div class="d-flex flex-row text-nowrap" th:each="role : ${currentUser.getRoles()}">
+        <p th:text="${role.role}" class="px-2 pt-2 fs-4"></p>
+    </div>
+    <div class="ms-auto">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="text-muted fs-6" style="background-color: transparent">Logout</button>
+        </form>
+    </div>
+</div>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+</head>
+<body style="background-color: #e7e7e7;">
+
+
+<div class="container-fluid d-flex flex-column mt-3">
+    <div class="row min-vh-100" style="height: 100vh;">
+        <div class="col-2 user-container bg-white">
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary btn-block w-100" type="button">Admin</button>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-info btn-block w-100" type="button">User</button>
+            </div>
+
+        </div>
+        <div class="col-10">
+
+            <h1>Admin panel</h1>
+
+            <nav class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true" onclick="redirectToAdmin()">Users table</a>
+
+                <a class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" onclick="redirectToAdminAddUser()">New user</a>
+
+            </nav>
+
+                <div class="card">
+                <div class="card-header">
+                    <h5>Add new user</h5>
+                </div>
+                <div class="card-body">
+
+                    <form action="#" th:action="@{/admin/saveUser}" th:object="${user}" method="POST">
+
+
+                            <div class="form-group row">
+                                <div class="col-12 text-center mb-md-0">
+                                    <label for="name" class="col-form-label font-weight-bold">First name:</label>
+                                </div>
+                                <div class="col-12 col-md-4 offset-md-4">
+                                    <input type="text" th:field="*{name}" class="form-control  mx-auto" id="name" style="background-color: #ffe082;">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-12 text-center mb-md-0">
+                                    <label for="name" class="col-form-label font-weight-bold">Age:</label>
+                                </div>
+                                <div class="col-12 col-md-4 offset-md-4">
+                                    <input type="text" th:field="*{age}" class="form-control  mx-auto" id="age" >
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-12 text-center mb-md-0">
+                                    <label for="name" class="col-form-label font-weight-bold">Email:</label>
+                                </div>
+                                <div class="col-12 col-md-4 offset-md-4">
+                                    <input type="text" th:field="*{email}" class="form-control  mx-auto" id="email" style="background-color: #ffe082;">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-12 text-center mb-md-0">
+                                    <label for="name" class="col-form-label font-weight-bold">Password:</label>
+                                </div>
+                                <div class="col-12 col-md-4 offset-md-4">
+                                    <input type="text" th:field="*{password}" class="form-control  mx-auto" id="password">
+                                </div>
+                            </div>
+
+
+
+                            <div class=" form-group row ">
+                                <h6 class="text-center mt-3 fw-bold">Roles:</h6>
+                                <div class="col-12 col-md-4" style="margin-left: 45%">
+                                    <div>
+                                        <input type="checkbox" name="userRoles" id="adminRole" th:value="'ROLE_ADMIN'" style="transform: scale(1.7);"/>
+                                        <label for="adminRole" class="text-center ms-1" style="font-size: 18px;">Admin</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" name="userRoles" id="userRole" th:value="'ROLE_USER'" style="transform: scale(1.7);"/>
+                                        <label for="userRole" class="text-center ms-1 mt-2" style="font-size: 18px;">User</label>
+                                    </div>
+                                </div>
+
+
+
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-success">Add new user</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    function redirectToAdmin() {
+        window.location.href = "/admin";
+    }
+</script>
+<script>
+    function redirectToAdminAddUser() {
+        window.location.href = "/admin/addUser";
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+
+</body>
+</html>
